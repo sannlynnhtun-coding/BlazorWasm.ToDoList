@@ -1,0 +1,63 @@
+﻿@page "/"
+@inject ToDoService ToDoService
+
+<PageTitle>@title</PageTitle>
+
+<header>
+    <h1>@title</h1>
+    <form id="new-task-form">
+        <input type="text"
+               name="new-task-input"
+               id="new-task-input"
+               @bind-value="@newItem.TaskName"
+               placeholder="What do you have planned?" />
+        @if (newItem.Id == 0)
+        {
+            <input type="button" id="new-task-submit"
+               @onclick="AddItem"
+               value="Add task" />
+        }
+        else
+        {
+            <input type="button" id="new-task-submit"
+               @onclick="UpdateItem"
+               value="Update task" />
+        }
+    </form>
+</header>
+<main>
+    <section class="task-list">
+        <h2>Tasks</h2>
+        <div id="tasks">
+            @foreach (var item in items.OrderByDescending(x => x.CreatedDateTime))
+            {
+                <div class="task">
+                    <div class="content">
+                        <input type="text"
+                           class="text"
+                           value="@item.TaskName"
+                           readonly>
+                    </div>
+                    <div class="actions">
+                        <button class="edit" @onclick="() => EditItem(item.Id)">Edit</button>
+                        <button class="delete" @onclick="() => DeleteItem(item.Id)">Delete</button>
+                    </div>
+                </div>
+            }
+            <!-- <div class="task">
+                <div class="content">
+                    <input
+                        type="text"
+                        class="text"
+                        value="A new task"
+                        readonly>
+                </div>
+                <div class="actions">
+                    <button class="edit">Edit</button>
+                    <button class="delete">Delete</button>
+                </div>
+            </div> -->
+        </div>
+    </section>
+</main>
+
